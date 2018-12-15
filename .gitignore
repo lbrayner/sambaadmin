@@ -3,3 +3,4 @@
 .project
 .settings/
 sites/html/index.html
+/sites/html/htadmin/config/config.ini
