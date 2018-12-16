@@ -27,7 +27,11 @@ function send_forgotten_mail($email, $username, $link) {
 	$mail->addAddress ( $email ); // Add a recipient
 	
 	$mail->Subject = 'Reset password';
-	$mail->Body = 'You can reset your password with this link: ' . $link;
+
+    $mail->isHTML(true);
+	$mail->Body = '<p>You can reset your password with <a href="' . $link . '">this</a> link.</p>';
+	$mail->AltBody = 'You can reset your password with this link: ' . $link;
+    $mail->CharSet = 'utf-8';
 	//$mail->SMTPDebug = 2;
 	
 	if (! $mail->send ()) {
