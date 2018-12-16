@@ -19,7 +19,7 @@ function send_forgotten_mail($email, $name, $link) {
 	//$mail->Port = 465;
 	
 	$mail->From = $ini ["mail_from"];
-    $mail_from_name = 'htAdmin';
+    $mail_from_name = 'HTAdmin';
     if (!is_null_or_empty_string($ini ['mail_from_name'])) {
         $mail_from_name = $ini ['mail_from_name'];
     }
