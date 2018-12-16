@@ -85,7 +85,7 @@ $show_standardform = true;
 			$meta_model = $meta_models[$user];
 			if (isset ( $meta_model ) && $meta_model->mailkey === $key) {
 				$htpasswd->user_update ( $user, $pwd );
-				$meta_model->mailkey = random_password ( 8 );
+				$meta_model->mailkey = random_password ( PASSWORD_LENGTH );
 				$htpasswd->meta_update ( $meta_model );
 				$alert_class = "alert-info";
 				$alert_message = "Password changed.";

@@ -25,6 +25,8 @@ function check_username($username) {
 
 }
 
+const PASSWORD_LENGTH = 24;
+
 function random_password($length) {
 	$alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ1234567890';
 	$pass = array(); //remember to declare $pass as an array
