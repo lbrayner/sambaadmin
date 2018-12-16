@@ -1,7 +1,12 @@
 HTAdmin
 =======
 
-HTAdmin is a simple .htaccess and .htpasswd editor implemented in PHP with a nice frontend (based on bootstrap). It's intended to secure a folder of plain html files with multiple users. The admin has to create a user, but every user can change his password by himself using a self service area. It is also possible to send a password reset mail.
+HTAdmin is a simple ~~.htaccess and .htpasswd~~ htpasswd file editor implemented
+in PHP with a nice frontend (based on bootstrap). It's intended to ~~secure a
+folder of plain html files with multiple users~~ simply update and htpasswd
+file. The admin has to create a user, but every user can change his password by
+himself using a self service area. ~~It is also possible to send a password
+reset mail~~.
 
 It comes with a preconfigured Vagrant / Puppet VM, so you don't have to install a LAMP stack locally for testing.
 
