@@ -3,7 +3,7 @@ require 'phpmailer/PHPMailerAutoload.php';
 include_once ('tools/util.php');
 
 
-function send_forgotten_mail($email, $username, $link) {
+function send_forgotten_mail($email, $name, $link) {
 	if (!isset($ini)) {
 		$ini = read_config ();
 	}
@@ -29,8 +29,10 @@ function send_forgotten_mail($email, $username, $link) {
 	$mail->Subject = 'Reset password';
 
     $mail->isHTML(true);
-	$mail->Body = '<p>You can reset your password with <a href="' . $link . '">this</a> link.</p>';
-	$mail->AltBody = 'You can reset your password with this link: ' . $link;
+    $mail->Body = '<p>Hello, ' . $name . '! ' .
+        'You can reset your password with <a href="' . $link . '">this</a> link.</p>';
+    $mail->AltBody = 'Hello, ' . $name . '! ' .
+        'You can reset your password with this link: ' . $link;
     $mail->CharSet = 'utf-8';
 	//$mail->SMTPDebug = 2;
 	

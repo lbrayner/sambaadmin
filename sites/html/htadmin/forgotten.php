@@ -30,7 +30,7 @@ $show_standardform = true;
 				$meta_models = $htpasswd->get_metadata ();
 				$meta_model = $meta_models [$user];
 				$link = $mailUrl . '?' . 'user=' . urldecode ( $user ) . '&' . 'key=' . urlencode ( $meta_model->mailkey );
-				send_forgotten_mail ( $email, $user, $link );
+				send_forgotten_mail ( $email, $meta_model->name, $link );
 				$alert_class = "alert-info";
 				$alert_message = "Email successfully sent. Please check your inbox. " . htmlspecialchars ( $email );
 				include_once ('includes/inline_message.php');
