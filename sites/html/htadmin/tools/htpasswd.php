@@ -122,8 +122,11 @@ class htpasswd {
         while ( ! feof ( $this->fp ) && trim ( $lusername = array_shift (
             explode ( ":", $line = rtrim ( fgets ( $this->fp ) ) ) ) ) ) {
             if ($lusername == $username) {
-                fseek ( $this->fp, (- 1 - 1 - 60 - strlen ( $username )), SEEK_CUR );
-                fwrite ( $this->fp, $username . ':' . self::htcrypt ( $password ) . "\n" );
+                fseek ( $this->fp, (- 1 - strlen($line)), SEEK_CUR );
+                self::delete($this->fp, $username, $this->filename, false);
+                file_put_contents ( $this->filename, 
+                    $username . ':' . self::htcrypt ( $password ) . "\n" ,
+                    FILE_APPEND | LOCK_EX);
                 return true;
             }
         }
@@ -152,17 +155,25 @@ class htpasswd {
             return fopen ( $filename, 'r+' );
         }
     }
-    static function delete($fp, $username, $filename) {
+    static function delete($fp, $username, $filename, $dorewind = true) {
         $data = '';
-        rewind ( $fp );
-        while ( ! feof ( $fp ) && trim ( $lusername = array_shift ( explode ( ":", $line = rtrim ( fgets ( $fp ) ) ) ) ) ) {
+        $pos = ftell($fp);
+        if ($dorewind) {
+            rewind ( $fp );
+        }
+        while ( ! feof ( $fp ) && trim ( $lusername = array_shift ( explode (
+            ":", $line = rtrim ( fgets ( $fp ) ) ) ) ) ) {
             if (! trim ( $line ))
                 break;
             if ($lusername != $username)
                 $data .= $line . "\n";
         }
-        $fp = fopen ( $filename, 'w' );
+        $fp = fopen ( $filename, 'r+' );
+        if (!$dorewind) {
+            fseek($fp, $pos);
+        }
         fwrite ( $fp, rtrim ( $data ) . (trim ( $data ) ? "\n" : '') );
+        ftruncate( $fp, ftell($fp));
         fclose ( $fp );
         $fp = fopen ( $filename, 'r+' );
         return true;
