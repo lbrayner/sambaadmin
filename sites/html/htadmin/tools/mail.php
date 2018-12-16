@@ -19,7 +19,11 @@ function send_forgotten_mail($email, $username, $link) {
 	//$mail->Port = 465;
 	
 	$mail->From = $ini ["mail_from"];
-	$mail->FromName = 'Mailer';
+    $mail_from_name = 'htAdmin';
+    if (!is_null_or_empty_string($ini ['mail_from_name'])) {
+        $mail_from_name = $ini ['mail_from_name'];
+    }
+	$mail->FromName = $mail_from_name;
 	$mail->addAddress ( $email ); // Add a recipient
 	
 	$mail->Subject = 'Reset password';
