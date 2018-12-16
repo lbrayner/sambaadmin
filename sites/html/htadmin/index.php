@@ -3,9 +3,11 @@ include_once ('includes/checklogin.php');
 include_once ('tools/htpasswd.php');
 include_once ('includes/head.php');
 include_once ('includes/nav.php');
+include_once ('tools/util.php');
 
-$htpasswd = new htpasswd ( $ini ['secure_path'], true );
-$use_metadata = $ini ['use_metadata'];
+$htpasswd = new htpasswd ( $ini ['secure_path'], $ini ['metadata_path'] );
+$metadata_path = $ini ['metadata_path'];
+$use_metadata = !is_null_or_empty_string($metadata_path);
 
 ?>
 

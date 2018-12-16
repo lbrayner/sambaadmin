@@ -1,6 +1,7 @@
 <?php
 include_once ("model/meta_model.php");
 include_once ("hash_tool.php");
+include_once ("tools/util.php");
 /**
  * htpasswd tools for Apache Basic Auth.
  *
@@ -11,14 +12,15 @@ class htpasswd {
     var $metafp;
     var $filename;
     var $metafilename;
-    var $use_metadata;
 
-    /* use_metadata is not used. */
-    function htpasswd($htpasswdfile, $use_metadata = false) {
-        @$this->use_metadata = false;
-
+    function htpasswd($htpasswdfile, $metadata_path = "") {
         @$this->fp = @$this::open_or_create ( $htpasswdfile );
 
+		if (!is_null_or_empty_string($metadata_path)) {
+			@$this->metafp = @$this::open_or_create ( $metadata_path );
+			$this->metafilename = $metadata_path;
+		}
+		
         $this->filename = $htpasswdfile;
     }
     function user_exists($username) {

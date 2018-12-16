@@ -5,7 +5,7 @@ include_once ('tools/htpasswd.php');
 include_once ('includes/head.php');
 include_once ('includes/nav.php');
 
-$htpasswd = new htpasswd ( $ini ['secure_path'], true );
+$htpasswd = new htpasswd ( $ini ['secure_path'], $ini ['metadata_path'] );
 
 $protocol = strpos ( strtolower ( $_SERVER ['SERVER_PROTOCOL'] ), 'https' ) === FALSE ? 'http' : 'https';
 $host = $_SERVER ['HTTP_HOST'];

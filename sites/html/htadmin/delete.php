@@ -7,9 +7,10 @@ if (!check_login()) {
 }
 include_once ('tools/htpasswd.php');
 $ini = read_config();
-$use_metadata = $ini ['use_metadata'];
+$metadata_path = $ini ['metadata_path'];
+$use_metadata = !is_null_or_empty_string($metadata_path);
 
-$htpasswd = new htpasswd ( $ini ['secure_path'], $use_metadata );
+$htpasswd = new htpasswd ( $ini ['secure_path'], $metadata_path );
 
 if (isset ( $_POST['user'] )) {
 	$user = $_POST['user'];
