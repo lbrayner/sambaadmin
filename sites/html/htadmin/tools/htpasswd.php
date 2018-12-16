@@ -1,6 +1,5 @@
 <?php
 include_once ("model/meta_model.php");
-include_once ("hash_tool.php");
 include_once ("tools/util.php");
 /**
  * htpasswd tools for Apache Basic Auth.
@@ -105,8 +104,7 @@ class htpasswd {
             $hash = trim ($userpass [1] );
 
             if ($lusername == $username) {
-                $validator = self::create_hash_tool($hash);
-                return $validator->check_password_hash($password, $hash);
+                return self::check_password_hash($password, $hash);
             }
         }
         return false;
@@ -121,9 +119,10 @@ class htpasswd {
     }
     function user_update($username, $password) {
         rewind ( $this->fp );
-        while ( ! feof ( $this->fp ) && trim ( $lusername = array_shift ( explode ( ":", $line = rtrim ( fgets ( $this->fp ) ) ) ) ) ) {
+        while ( ! feof ( $this->fp ) && trim ( $lusername = array_shift (
+            explode ( ":", $line = rtrim ( fgets ( $this->fp ) ) ) ) ) ) {
             if ($lusername == $username) {
-                fseek ( $this->fp, (- 15 - strlen ( $username )), SEEK_CUR );
+                fseek ( $this->fp, (- 1 - 1 - 60 - strlen ( $username )), SEEK_CUR );
                 fwrite ( $this->fp, $username . ':' . self::htcrypt ( $password ) . "\n" );
                 return true;
             }
@@ -169,17 +168,13 @@ class htpasswd {
         return true;
     }
     static function htcrypt($password) {
-        return crypt ( $password, substr ( str_replace ( '+', '.', base64_encode ( pack ( 'N4', mt_rand (), mt_rand (), mt_rand (), mt_rand () ) ) ), 0, 22 ) );
+        return password_hash($password,PASSWORD_DEFAULT);
     }
 
-
-    static function create_hash_tool($hash) {
-        if (strpos($hash, '$apr1') === 0) {
-            return new md5_hash_tool();
-        } else {
-            return new crypt_hash_tool();
-        }
+    static function check_password_hash($password, $hash) {
+        return password_verify($password, $hash);
     }
+
 
 }
 
