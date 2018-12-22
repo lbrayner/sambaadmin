@@ -3,7 +3,7 @@ include_once ("model/meta_model.php");
 include_once ("tools/util.php");
 include_once ("tools/passwd.php");
 
-class smbpasswd implements i_password {
+class smbpasswd {
     var $metafp;
     var $metafilename;
 
