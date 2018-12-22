@@ -67,7 +67,8 @@ class htpasswd {
         rewind ( $this->fp );
         $users = array ();
         $i = 0;
-        while ( ! feof ( $this->fp ) && trim ( $lusername = array_shift ( explode ( ":", $line = rtrim ( fgets ( $this->fp ) ) ) ) ) ) {
+        while ( ! feof ( $this->fp ) && trim ( $lusername = array_shift (
+            explode ( ":", $line = rtrim ( fgets ( $this->fp ) ) ) ) ) ) {
             $users [$i] = $lusername;
             $i ++;
         }

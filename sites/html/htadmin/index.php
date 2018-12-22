@@ -1,11 +1,11 @@
 <?php
 include_once ('includes/checklogin.php');
-include_once ('tools/htpasswd.php');
+include_once ('tools/smbpasswd.php');
 include_once ('includes/head.php');
 include_once ('includes/nav.php');
 include_once ('tools/util.php');
 
-$htpasswd = new htpasswd ( $ini ['secure_path'], $ini ['metadata_path'] );
+$smbpasswd = new smbpasswd ( $ini ['metadata_path'] );
 $metadata_path = $ini ['metadata_path'];
 $use_metadata = !is_null_or_empty_string($metadata_path);
 
@@ -38,18 +38,26 @@ if (isset ( $_POST ['user'] )) {
 		?>
 			<div class="alert alert-info">
 			<?php
-		if (! $htpasswd->user_exists ( $username )) {
-			$htpasswd->user_add ( $username, $passwd );
+		if (! $smbpasswd->user_exists ( $username )) {
+			$smbpasswd->user_add ( $username, $passwd );
 			echo "<p>User <em>" . htmlspecialchars ( $username ) . "</em> created.</p>";
 		} else {
-			$htpasswd->user_update ( $username, $passwd );
-			echo "<p>User <em>" . htmlspecialchars ( $username ) . "</em> changed.</p>";
+			$update_success = $smbpasswd->user_update ( $username, $passwd );
+
+            if(!$update_success) {
+                echo '<div class="alert alert-danger">';
+                echo 'There was an erro! Check the logs.';
+                
+            }
+            else {
+                echo "<p>User <em>" . htmlspecialchars ( $username ) . "</em> changed.</p>";
+            }
 		}
 		if ($use_metadata) {
-			if (! $htpasswd->meta_exists ( $username )) {
-				$htpasswd->meta_add ( $meta_model );
+			if (! $smbpasswd->meta_exists ( $username )) {
+				$smbpasswd->meta_add ( $meta_model );
 			} else {
-				$htpasswd->meta_update ( $meta_model );
+				$smbpasswd->meta_update ( $meta_model );
 			}
 		}
 	}
@@ -100,9 +108,9 @@ if (isset ( $_POST ['user'] )) {
 			<div class="col-xs-12 col-md-6">
 				<h3>Users:</h3>
 			<?php
-			$users = $htpasswd->get_users ();
+			$users = $smbpasswd->get_users ();
 			if ($use_metadata) {
-				$meta_map = $htpasswd->get_metadata ();
+				$meta_map = $smbpasswd->get_metadata ();
 			}
 			include_once ("includes/user_table.php");			
 			?>			
@@ -112,7 +120,7 @@ if (isset ( $_POST ['user'] )) {
 			<br /> <br />
 			<div class="col-xs-12 col-md-10 well">
 				<p>
-					Create new users for the htpasswd file here. A user can change
+					Create new users for the smbpasswd file here. A user can change
 					his/her password with this <a href="selfservice.php">self service
 						link.</a><br /> You can fill the username in the form if you add
 					the url parameter user=&lt;username&gt;
