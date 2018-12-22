@@ -1,8 +1,5 @@
 <?php
 include_once ("model/meta_model.php");
-interface i_password {
-}
-
 class passwd {
     static function meta_find_user_for_mail($metafp, $email) {
         while ( ! feof ( $metafp ) && $meta = explode ( ":",
