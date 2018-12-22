@@ -25,7 +25,7 @@ class smbpasswd implements i_password {
         return passwd::meta_find_user_for_mail($this->metafp, $email);
     }
     function get_metadata() {
-        return passwd::get_metadata($this->metafp);
+        return passwd::get_metadata(@$this->metafp);
     }
     function get_users() {
         return self::stdout("sudo pdbedit -L | sed -E 's/^([^:]+):.*/\\1/'");
@@ -114,7 +114,7 @@ class smbpasswd implements i_password {
             $i = 0;
 
             while (($line = fgets($fd2)) !== false) {
-                $out [$i] = $line;
+                $out [$i] = dropn($line); // dropping LF
                 $i ++;
             }
 

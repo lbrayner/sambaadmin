@@ -42,4 +42,8 @@ function is_null_or_empty_string($str){
     return (!isset($str) || trim($str) === '');
 }
 
+function dropn($str,$n=1){
+    return substr($str, 0, -$n);
+}
+
 ?>
