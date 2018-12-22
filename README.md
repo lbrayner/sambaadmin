@@ -1,12 +1,23 @@
-HTAdmin
+SAMBAadmin
 =======
 
-HTAdmin is a simple ~~.htaccess and .htpasswd~~ htpasswd file editor implemented
+It's a fork of <https://github.com/lbrayner/htadmin>, whose upstream is
+[HTAdmin](https://github.com/soster/htadmin).
+
+**SAMBAadmin** is a simple ~~.htaccess and .htpasswd~~ **Samba** password manager
 in PHP with a nice frontend (based on bootstrap). It's intended to ~~secure a
-folder of plain html files with multiple users~~ simply update an htpasswd
-file. The admin has to create a user, but every user can change his password by
-himself using a self service area. It is also possible to send a password
-reset mail.
+folder of plain html files with multiple users~~ run `smbpasswd`, `pdbedit`, etc.
+with `sudo`. The admin has to create a user (not before creating a UNIX user),
+but every user can change his password by himself using a self service area. It
+is also possible to send a password reset mail.
+
+For **apache** to be able to perform the required tasks the `www-data` user
+needs to run these commands with `sudo` passwordless:
+
+- `pdbedit -L` (as `root`)
+- `smbpasswd -a -s <USERNAME>` (as `root`)
+- `smbpasswd -s` (as any user)
+- `net sam set pwdmustchangenow <USERNAME> yes` (as `root`)
 
 It comes with a preconfigured Vagrant / Puppet VM, so you don't have to install a LAMP stack locally for testing.
 
