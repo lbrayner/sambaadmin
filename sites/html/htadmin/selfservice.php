@@ -1,10 +1,10 @@
 <?php
 session_start();
-include_once ('tools/htpasswd.php');
+include_once ('tools/smbpasswd.php');
 include_once ('includes/head.php');
 include_once ('includes/nav.php');
 
-$htpasswd = new htpasswd ( $ini ['secure_path'] );
+$smbpasswd = new smbpasswd ( $ini ['metadata_path'] );
 
 ?>
 
@@ -15,21 +15,24 @@ $htpasswd = new htpasswd ( $ini ['secure_path'] );
 <?php
 $equal = true;
 $success = false;
-if (isset ( $_POST ['user'] ) && isset ( $_POST ['oldpwd'] ) && isset ( $_POST ['newpwd'] ) && isset ( $_POST ['newpwd2'] )) {
+if (isset ( $_POST ['user'] ) && isset ( $_POST ['oldpwd'] ) 
+    & isset ( $_POST ['newpwd'] ) && isset ( $_POST ['newpwd2'] )) {
 	$username = $_POST ['user'];
 	$old = $_POST ['oldpwd'];
 	$new = $_POST ['newpwd'];
 	$new2 = $_POST ['newpwd2'];
 	
-	if ($new == $new2 && $htpasswd->user_check ( $username, $old )) {
-		$htpasswd->user_update ( $username, $new );
+    $error_msg = "";
+    if ($new == $new2 && $smbpasswd->user_self_service($username, $old, $new, $error_msg)) {
 		?>
 			<div class="alert alert-info">Password changed successfully.</div>
 		<?php
-	} else {
+        } else {
 		?>
 				<div class="alert alert-danger">Could not change password.</div>
-				<?php
+<?php
+            if($error_msg)
+				echo '<div class="alert alert-danger">' . $error_msg . '</div>';
 	}
 }
 

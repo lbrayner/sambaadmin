@@ -36,27 +36,37 @@ class smbpasswd implements i_password {
         return passwd::meta_add($this->metafp, $meta_model);
     }
 
-    function user_check($username, $password) {
-    }
+    /* function user_check($username, $password) { */
+    /* } */
 
+    /* TODO */
     function user_delete($username) {
     }
 
     function meta_delete($username) {
         return passwd::delete ( @$this->metafp, $username, @$this->metafilename );
     }
+
     function user_update($username, $password) {
         $err_code = self::errcode("(echo " . $password . "; echo " . $password .
             ") | sudo smbpasswd -s " . $username,"user_update");
         return !$err_code;
     }
+
+    function user_self_service($username, $old, $new, &$error_msg = NULL) {
+        $err_code = self::errcode("(echo " . $old . "; echo " . $new . "; " .
+            "echo " . $new .  ") | sudo -u " . $username . " smbpasswd -s ",
+            "user_self_service",$error_msg);
+        return !$err_code;
+    }
+
     function meta_update(meta_model $meta_model) {
         $this->meta_delete ( $meta_model->user );
         $this->meta_add ( $meta_model );
         return false;
     }
 
-    static function errcode($cmd,$logprefix="cmd")
+    static function errcode($cmd,$logprefix="cmd",&$error_msg=NULL)
     {
         $tmpfname = tempnam(sys_get_temp_dir(),$logprefix.'_');
 
@@ -79,6 +89,14 @@ class smbpasswd implements i_password {
         if (is_resource($process)) {
 
             $return_value = proc_close($process);
+
+            if($return_value)
+                if($error_msg !== NULL)
+                    $error_msg = lastline($tmpfname);
+
+/*             echo 'return_value: ' . $return_value . '<br/>'; */
+/*             echo 'error_msg: ' . $error_msg . '<br/>'; */
+/*             echo 'lastline: ' . lastline($tmpfname) . '<br/>'; */
 
             return $return_value;
         }

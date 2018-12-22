@@ -46,4 +46,19 @@ function dropn($str,$n=1){
     return substr($str, 0, -$n);
 }
 
+function lastline($fname){
+    $fp = fopen($fname, "r");
+    if(!$fp)
+        return false;
+    rewind ( $fp );
+    $previous = "";
+    $line = "";
+    while ( ! feof ( $fp ) ) {
+        $previous = $line;
+        $line = fgets($fp);
+    }
+    fclose($fp);
+    return $previous;
+}
+
 ?>
