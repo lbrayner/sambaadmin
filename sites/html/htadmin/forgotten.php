@@ -83,8 +83,16 @@ $show_standardform = true;
 			$pwd = $_POST ['pwd'];
 			$meta_models = $smbpasswd->get_metadata ();
 			$meta_model = $meta_models[$user];
-			if (isset ( $meta_model ) && $meta_model->mailkey === $key) {
-				$smbpasswd->user_update ( $user, $pwd );
+            $user_update_error = "";
+            if (isset ( $meta_model ) && $meta_model->mailkey === $key &&
+                $smbpasswd->user_update ( $user, $pwd, $user_update_error )) {
+
+                /* User must change his password in the selfservice area afterwards. */
+                $user_must_change_password_error = "";
+                if(!$smbpasswd->user_must_change_password($user,
+                    $user_must_change_password_error))
+                    echo 'Error! net sam set pwdmustchangenow<br/>';
+
 				$meta_model->mailkey = random_password ( PASSWORD_LENGTH );
 				$smbpasswd->meta_update ( $meta_model );
 				$alert_class = "alert-info";
@@ -92,7 +100,7 @@ $show_standardform = true;
 				include_once ('includes/inline_message.php');
 			} else {
 				$alert_class = "alert-danger";
-				$alert_message = "Could not reset password.";
+				$alert_message = $user_update_error;
 				include_once ('includes/inline_message.php');
 			}
 		}

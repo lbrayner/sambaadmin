@@ -57,6 +57,12 @@ class smbpasswd {
         return !$err_code;
     }
 
+    function user_must_change_password($username, &$error_msg = NULL) {
+        $err_code = self::errcode("sudo net sam set pwdmustchangenow " .
+            $username . " yes", $error_msg);
+        return !$err_code;
+    }
+
     function user_self_service($username, $old, $new, &$error_msg = NULL) {
         $err_code = self::errcode("(echo " . $old . "; echo " . $new . "; " .
             "echo " . $new .  ") | sudo -u " . $username . " smbpasswd -s ",
