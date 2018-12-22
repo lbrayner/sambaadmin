@@ -7,6 +7,16 @@ function send_forgotten_mail($email, $name, $link) {
 	if (!isset($ini)) {
 		$ini = read_config ();
 	}
+
+    $html = '<p>Hello, ' . $name . '! ' .
+        'You can reset your password with <a href="' . $link . '">this</a> link.</p>' .
+        '<p>You might need change your password afterwards in the <b>Self Service Area</b> ' .
+        'in order to conform to any restrictions.</p>';
+    $plain = "Hello, " . $name . "! " .
+        "You can reset your password with this link: " . $link . "\n\n" .
+        "You might need change your password afterwards in the Self Service Area\n" .
+        "in order to conform to any restrictions.";
+
 	$mail = new PHPMailer ();
 	
 	$mail->isSMTP (); // Set mailer to use SMTP
@@ -29,10 +39,8 @@ function send_forgotten_mail($email, $name, $link) {
 	$mail->Subject = 'Reset password';
 
     $mail->isHTML(true);
-    $mail->Body = '<p>Hello, ' . $name . '! ' .
-        'You can reset your password with <a href="' . $link . '">this</a> link.</p>';
-    $mail->AltBody = 'Hello, ' . $name . '! ' .
-        'You can reset your password with this link: ' . $link;
+    $mail->Body = $html;
+    $mail->AltBody = $plain;
     $mail->CharSet = 'utf-8';
 	//$mail->SMTPDebug = 2;
 	
