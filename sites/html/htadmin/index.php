@@ -35,21 +35,27 @@ if (isset ( $_POST ['user'] )) {
 			<?php
 		echo "<p>User <em>" . htmlspecialchars ( $username ) . "</em> is invalid!.</p>";
 	} else {
-		?>
-			<div class="alert alert-info">
-			<?php
+
 		if (! $smbpasswd->user_exists ( $username )) {
-			$smbpasswd->user_add ( $username, $passwd );
-			echo "<p>User <em>" . htmlspecialchars ( $username ) . "</em> created.</p>";
+            $error_msg = "";
+            if($smbpasswd->user_add ( $username, $passwd, $error_msg )){
+                echo '<div class="alert alert-info">';
+                echo "<p>User <em>" . htmlspecialchars ( $username ) . "</em> created.</p>";
+            }
+            else {
+				echo '<div class="alert alert-danger">' . $error_msg;
+            }
 		} else {
-			$update_success = $smbpasswd->user_update ( $username, $passwd );
+            $error_msg = "";
+			$update_success = $smbpasswd->user_update ( $username, $passwd, $error_msg );
 
             if(!$update_success) {
                 echo '<div class="alert alert-danger">';
-                echo 'There was an error! Check the logs.';
+                echo '<p>' . $error_msg . '</p>';
                 
             }
             else {
+                echo '<div class="alert alert-info">';
                 echo "<p>User <em>" . htmlspecialchars ( $username ) . "</em> changed.</p>";
             }
 		}

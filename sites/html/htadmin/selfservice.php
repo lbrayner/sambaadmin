@@ -28,9 +28,12 @@ if (isset ( $_POST ['user'] ) && isset ( $_POST ['oldpwd'] )
 			<div class="alert alert-info">Password changed successfully.</div>
 		<?php
         } else {
-		?>
-				<div class="alert alert-danger">Could not change password.</div>
-<?php
+
+            echo '<div class="alert alert-danger">Could not change password.</div>';
+
+            if($new != $new2)
+				echo '<div class="alert alert-danger">Passwords do not match.</div>';
+
             if($error_msg)
 				echo '<div class="alert alert-danger">' . $error_msg . '</div>';
 	}

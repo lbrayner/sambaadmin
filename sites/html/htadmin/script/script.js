@@ -9,7 +9,7 @@ function deleteUser(user){
 				$('.id-' + user).remove();
 
 			} else {
-				$( ".result" ).html("<p>An error occured.</p>");
+				$( ".result" ).html("<p>"+data+"</p>");
 			}
 			
 		} );			

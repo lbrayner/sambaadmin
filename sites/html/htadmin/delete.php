@@ -5,22 +5,23 @@ if (!check_login()) {
 	echo "unauthorized";
 	die();
 }
-include_once ('tools/htpasswd.php');
+include_once ('tools/smbpasswd.php');
 $ini = read_config();
 $metadata_path = $ini ['metadata_path'];
 $use_metadata = !is_null_or_empty_string($metadata_path);
 
-$htpasswd = new htpasswd ( $ini ['secure_path'], $metadata_path );
+$smbpasswd = new smbpasswd ($metadata_path);
 
 if (isset ( $_POST['user'] )) {
 	$user = $_POST['user'];
-	if ($htpasswd->user_delete($user)) {
+    $error_msg = "";
+	if ($smbpasswd->user_delete($user,$error_msg)) {
 		if ($use_metadata) {
-			$htpasswd->meta_delete($user);
+			$smbpasswd->meta_delete($user);
 		}
 		echo "success";
 	} else {
-		echo "error";
+        echo $error_msg;
 	}
 	
 } else {

@@ -30,26 +30,30 @@ class smbpasswd implements i_password {
     function get_users() {
         return self::stdout("sudo pdbedit -L | sed -E 's/^([^:]+):.*/\\1/'");
     }
-    function user_add($username, $password) {
+
+    function user_add($username, $password, &$error_msg = NULL) {
+        $err_code = self::errcode("(echo " . $password . "; echo " . $password .
+            ") | sudo smbpasswd -s -a " . $username,"user_add",$error_msg);
+        return !$err_code;
     }
+
     function meta_add(meta_model $meta_model) {
         return passwd::meta_add($this->metafp, $meta_model);
     }
 
-    /* function user_check($username, $password) { */
-    /* } */
-
-    /* TODO */
-    function user_delete($username) {
+    function user_delete($username, &$error_msg = NULL) {
+        $err_code = self::errcode("sudo smbpasswd -x " . $username,
+            "user_delete",$error_msg);
+        return !$err_code;
     }
 
     function meta_delete($username) {
         return passwd::delete ( @$this->metafp, $username, @$this->metafilename );
     }
 
-    function user_update($username, $password) {
+    function user_update($username, $password, &$error_msg = NULL) {
         $err_code = self::errcode("(echo " . $password . "; echo " . $password .
-            ") | sudo smbpasswd -s " . $username,"user_update");
+            ") | sudo smbpasswd -s " . $username,"user_update",$error_msg);
         return !$err_code;
     }
 
@@ -93,10 +97,6 @@ class smbpasswd implements i_password {
             if($return_value)
                 if($error_msg !== NULL)
                     $error_msg = lastline($tmpfname);
-
-/*             echo 'return_value: ' . $return_value . '<br/>'; */
-/*             echo 'error_msg: ' . $error_msg . '<br/>'; */
-/*             echo 'lastline: ' . lastline($tmpfname) . '<br/>'; */
 
             return $return_value;
         }
