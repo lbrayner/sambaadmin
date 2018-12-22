@@ -15,8 +15,10 @@ For **apache** to be able to perform the required tasks the `www-data` user
 needs to run these commands with `sudo` passwordless:
 
 - `pdbedit -L` (as `root`)
-- `smbpasswd -a -s <USERNAME>` (as `root`)
-- `smbpasswd -s` (as any user)
+- `smbpasswd -s -a <USERNAME>` (as `root`)
+- `smbpasswd -s <USERNAME>` (as `root`)
+- `smbpasswd -x <USERNAME>` (as `root`)
+- `smbpasswd -s` (as any Samba user)
 - `net sam set pwdmustchangenow <USERNAME> yes` (as `root`)
 
 It comes with a preconfigured Vagrant / Puppet VM, so you don't have to install a LAMP stack locally for testing.
