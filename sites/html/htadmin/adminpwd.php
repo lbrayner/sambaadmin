@@ -2,7 +2,7 @@
 include_once ('includes/checklogin.php');
 include_once ('includes/head.php');
 include_once ('includes/nav.php');
-include_once ('tools/htpasswd.php');
+include_once ('tools/passwd.php');
 
 ?>
 
@@ -16,7 +16,7 @@ include_once ('tools/htpasswd.php');
 				?>
 					<div class="alert alert-info">
 					<?php
-					echo "<p>Your new hash: <code>" . htpasswd::htcrypt($_POST['pwd']) . "</code></p>";
+					echo "<p>Your new hash: <code>" . passwd::htcrypt($_POST['pwd']) . "</code></p>";
 					?>
 						</div>
 				    <?php

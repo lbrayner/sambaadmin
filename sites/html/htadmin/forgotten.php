@@ -1,11 +1,11 @@
 <?php
 include_once ('tools/util.php');
 include_once ('tools/mail.php');
-include_once ('tools/htpasswd.php');
+include_once ('tools/smbpasswd.php');
 include_once ('includes/head.php');
 include_once ('includes/nav.php');
 
-$htpasswd = new htpasswd ( $ini ['secure_path'], $ini ['metadata_path'] );
+$smbpasswd = new smbpasswd ( $ini ['metadata_path'] );
 
 $protocol = strpos ( strtolower ( $_SERVER ['SERVER_PROTOCOL'] ), 'https' ) === FALSE ? 'http' : 'https';
 $host = $_SERVER ['HTTP_HOST'];
@@ -21,13 +21,13 @@ $show_standardform = true;
 		<?php
 		if (isset ( $_POST ['email'] )) {
 			$email = $_POST ['email'];
-			$user = $htpasswd->meta_find_user_for_mail ( $email );
+			$user = $smbpasswd->meta_find_user_for_mail ( $email );
 			if (! isset ( $user )) {
 				$alert_class = "alert-danger";
 				$alert_message = "Email not found: " . htmlspecialchars ( $email );
 				include_once ('includes/inline_message.php');
 			} else {
-				$meta_models = $htpasswd->get_metadata ();
+				$meta_models = $smbpasswd->get_metadata ();
 				$meta_model = $meta_models [$user];
 				$link = $mailUrl . '?' . 'user=' . urldecode ( $user ) . '&' . 'key=' . urlencode ( $meta_model->mailkey );
 				send_forgotten_mail ( $email, $meta_model->name, $link );
@@ -40,7 +40,7 @@ $show_standardform = true;
 		if (isset ( $_GET ['user'] ) && isset ( $_GET ['key'] )) {
 			$user = $_GET ['user'];
 			$key = $_GET ['key'];
-			$meta_models = $htpasswd->get_metadata ();
+			$meta_models = $smbpasswd->get_metadata ();
 			$meta_model = $meta_models [$user];
 			if (isset ( $meta_model ) && $meta_model->mailkey === $key) {
 				$show_standardform = false;
@@ -81,12 +81,12 @@ $show_standardform = true;
 			$user = $_POST ['user'];
 			$key = $_POST ['key'];
 			$pwd = $_POST ['pwd'];
-			$meta_models = $htpasswd->get_metadata ();
+			$meta_models = $smbpasswd->get_metadata ();
 			$meta_model = $meta_models[$user];
 			if (isset ( $meta_model ) && $meta_model->mailkey === $key) {
-				$htpasswd->user_update ( $user, $pwd );
+				$smbpasswd->user_update ( $user, $pwd );
 				$meta_model->mailkey = random_password ( PASSWORD_LENGTH );
-				$htpasswd->meta_update ( $meta_model );
+				$smbpasswd->meta_update ( $meta_model );
 				$alert_class = "alert-info";
 				$alert_message = "Password changed.";
 				include_once ('includes/inline_message.php');
