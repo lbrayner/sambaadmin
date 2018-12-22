@@ -35,8 +35,8 @@ if (count ( $users ) == 0) {
 	foreach ( $users as $user ) {
 		if ($use_metadata) {
             $fieldjs = "onclick=\"setUserField('" . htmlspecialchars ( $user )
-                . "', '" . htmlspecialchars ( $meta_map [$user]->email ) . "',
-                '" . htmlspecialchars ( $meta_map [$user]->name ) . "');\"";
+                . "', '" . htmlspecialchars ( @$meta_map [$user]->email ) . "',
+                '" . htmlspecialchars ( @$meta_map [$user]->name ) . "');\"";
 		} else {
 			$fieldjs = "onclick=\"setUserField('" . htmlspecialchars ( $user ) . "','','');\"";
 		}

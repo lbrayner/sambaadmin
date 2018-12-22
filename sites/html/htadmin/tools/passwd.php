@@ -54,8 +54,11 @@
 
         static function exists($fp, $username) {
             rewind ( $fp );
-            while ( ! feof ( $fp ) && trim ( $lusername = array_shift (
-                explode ( ":", $line = rtrim ( fgets ( $fp ) ) ) ) ) ) {
+            while ( ! feof ( $fp ) ) {
+                $strings = explode ( ":", $line = rtrim ( fgets ( $fp ) ) );
+                $lusername = array_shift ($strings);
+                if (!trim($lusername))
+                    break;
                 if ($lusername == $username)
                     return true;
             }
@@ -68,9 +71,10 @@
             if ($dorewind) {
                 rewind ( $fp );
             }
-            while ( ! feof ( $fp ) && trim ( $lusername = array_shift ( explode (
-                ":", $line = rtrim ( fgets ( $fp ) ) ) ) ) ) {
-                if (! trim ( $line ))
+            while ( ! feof ( $fp ) ) {
+                $strings = explode ( ":", $line = rtrim ( fgets ( $fp ) ) );
+                $lusername = array_shift ($strings);
+                if (!trim($lusername))
                     break;
                 if ($lusername != $username)
                     $data .= $line . "\n";

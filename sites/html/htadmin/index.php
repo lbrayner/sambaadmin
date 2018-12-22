@@ -46,7 +46,7 @@ if (isset ( $_POST ['user'] )) {
 
             if(!$update_success) {
                 echo '<div class="alert alert-danger">';
-                echo 'There was an erro! Check the logs.';
+                echo 'There was an error! Check the logs.';
                 
             }
             else {

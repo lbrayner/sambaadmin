@@ -33,7 +33,7 @@ class smbpasswd implements i_password {
     function user_add($username, $password) {
     }
     function meta_add(meta_model $meta_model) {
-        return password::meta_model($this->metafp, $meta_model);
+        return passwd::meta_add($this->metafp, $meta_model);
     }
 
     function user_check($username, $password) {
@@ -46,9 +46,9 @@ class smbpasswd implements i_password {
         return passwd::delete ( @$this->metafp, $username, @$this->metafilename );
     }
     function user_update($username, $password) {
-        system("(echo " . $password . "; echo " . $password .
-            ") | sudo smbpasswd -s", $return_var);
-        return !$return_var;
+        $err_code = self::errcode("(echo " . $password . "; echo " . $password .
+            ") | sudo smbpasswd -s " . $username,"user_update");
+        return !$err_code;
     }
     function meta_update(meta_model $meta_model) {
         $this->meta_delete ( $meta_model->user );
