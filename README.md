@@ -29,25 +29,27 @@ You find the application in `sites/html/htadmin`.
 
 ![Screenshot](screenshot.png "Screenshot")
 
-Just install vagrant and virtual box and type
+**The instructions below were meant for upstream and are not tested!**
 
-`vagrant up`
- 
-to start the vm. After startup point your browser to:
+~~Just install vagrant and virtual box and type~~
 
-<http://localhost/htadmin/>
+~~`vagrant up`~~
 
-Standard access: admin / admin, make sure to change that in your `...config/config.ini`. You have to enter a hashed password, there is a tool for its generation included in the webapp:
+~~to start the vm. After startup point your browser to:~~
 
-<http://localhost/htadmin/adminpwd.php>
+~~<http://localhost/htadmin/>~~
 
-the .htaccess and .htpasswd files are configured for this folder:
+~~Standard access: admin / admin, make sure to change that in your `...config/config.ini`. You have to enter a hashed password, there is a tool for its generation included in the webapp:~~
 
-<http://localhost/test/>
+~~<http://localhost/htadmin/adminpwd.php>~~
 
-Uses the following libraries:
+~~the .htaccess and .htpasswd files are configured for this folder:~~
 
-<https://github.com/PHPMailer/PHPMailer>
+~~<http://localhost/test/>~~
+
+~~Uses the following libraries:~~
+
+~~<https://github.com/PHPMailer/PHPMailer>~~
 
 
-Enjoy!
+~~Enjoy!~~
