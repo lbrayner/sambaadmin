@@ -21,6 +21,8 @@ needs to run these commands with `sudo` passwordless:
 - `smbpasswd -s` (as any Samba user)
 - `net sam set pwdmustchangenow <USERNAME> yes` (as `root`)
 
+Consider a solution similar to <https://github.com/lbrayner/safe_smbpasswd>.
+
 It comes with a preconfigured Vagrant / Puppet VM, so you don't have to install a LAMP stack locally for testing.
 
 You find the application in `sites/html/htadmin`.
