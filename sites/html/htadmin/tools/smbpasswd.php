@@ -65,7 +65,7 @@ class smbpasswd {
 
     function user_self_service($username, $old, $new, &$error_msg = NULL) {
         $err_code = self::errcode("(echo " . $old . "; echo " . $new . "; " .
-            "echo " . $new .  ") | sudo -u " . $username . " smbpasswd -s ",
+            "echo " . $new .  ") | sudo -u " . $username . " /usr/bin/smbpasswd -s ",
             "user_self_service",$error_msg);
         return !$err_code;
     }

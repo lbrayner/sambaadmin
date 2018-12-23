@@ -28,12 +28,17 @@ if (isset ( $_POST ['user'] )) {
 		$meta_model->name = $_POST ['name'];
 		$meta_model->mailkey = random_password(PASSWORD_LENGTH);
 	}
+
+    $username_valid = check_username ( $username );
+    $password_valid = check_password_quality ( $passwd );
 	
-	if (! check_username ( $username ) || ! check_password_quality ( $passwd )) {
-		?>
-			<div class="alert alert-danger">
-			<?php
-		echo "<p>User <em>" . htmlspecialchars ( $username ) . "</em> is invalid!.</p>";
+	if (!$username_valid  || !$password_valid ) {
+        echo '<div class="alert alert-danger">';
+
+        if(!$username_valid)
+            echo "<p>User <em>" . htmlspecialchars ( $username ) . "</em> is invalid!.</p>";
+        else
+            echo "<p>Bad password!</p>";
 	} else {
 
 		if (! $smbpasswd->user_exists ( $username )) {
