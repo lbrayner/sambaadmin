@@ -32,8 +32,9 @@ class smbpasswd {
     }
 
     function user_add($username, $password, &$error_msg = NULL) {
-        $err_code = self::errcode("(echo " . $password . "; echo " . $password .
-            ") | sudo smbpasswd -s -a " . $username,"user_add",$error_msg);
+        $err_code = self::errcode('(echo ' . escapeshellarg($password) . '; echo ' .
+            escapeshellarg($password) . ') | sudo smbpasswd -s -a ' .
+            escapeshellarg($username), 'user_add',$error_msg);
         return !$err_code;
     }
 
@@ -42,8 +43,8 @@ class smbpasswd {
     }
 
     function user_delete($username, &$error_msg = NULL) {
-        $err_code = self::errcode("sudo smbpasswd -x " . $username,
-            "user_delete",$error_msg);
+        $err_code = self::errcode('sudo smbpasswd -x ' . escapeshellarg($username),
+            'user_delete',$error_msg);
         return !$err_code;
     }
 
@@ -52,8 +53,9 @@ class smbpasswd {
     }
 
     function user_update($username, $password, &$error_msg = NULL) {
-        $err_code = self::errcode("(echo " . $password . "; echo " . $password .
-            ") | sudo smbpasswd -s " . $username,"user_update",$error_msg);
+        $err_code = self::errcode('(echo ' . escapeshellarg($password) . '; echo ' .
+            escapeshellarg($password) . ') | sudo smbpasswd -s ' .
+            escapeshellarg($username), 'user_update', $error_msg);
         return !$err_code;
     }
 
@@ -64,9 +66,10 @@ class smbpasswd {
     }
 
     function user_self_service($username, $old, $new, &$error_msg = NULL) {
-        $err_code = self::errcode("(echo " . $old . "; echo " . $new . "; " .
-            "echo " . $new .  ") | sudo -u " . $username . " /usr/bin/smbpasswd -s ",
-            "user_self_service",$error_msg);
+        $err_code = self::errcode('(echo ' . escapeshellarg($old) . '; echo ' .
+            escapeshellarg($new) . '; ' . 'echo ' . escapeshellarg($new) .
+            ') | sudo -u ' . escapeshellarg($username) . ' /usr/bin/smbpasswd -s',
+            'user_self_service',$error_msg);
         return !$err_code;
     }
 
