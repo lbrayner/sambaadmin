@@ -10,11 +10,11 @@ function send_forgotten_mail($email, $name, $link) {
 
     $html = '<p>Hello, ' . $name . '! ' .
         'You can reset your password with <a href="' . $link . '">this</a> link.</p>' .
-        '<p>You might need to change your password afterwards in the <b>Self Service Area</b> ' .
+        '<p>You might need to change your password afterwards in the <b>User Self Service</b> Area ' .
         'so as to conform to any restrictions.</p>';
     $plain = "Hello, " . $name . "! " .
         "You can reset your password with this link: " . $link . "\n\n" .
-        "You might need to change your password afterwards in the Self Service Area\n" .
+        "You might need to change your password afterwards in the User Self Service area\n" .
         "so as to conform to any restrictions.";
 
 	$mail = new PHPMailer ();
