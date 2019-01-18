@@ -28,7 +28,7 @@ include_once ('includes/nav.php');
 <div class="container box">
 	<div class="row">
 		<div class="col-xs-12">
-			<h2>Please Login:</h2>
+			<h2>Administrator</h2>
 <?php
 
 
