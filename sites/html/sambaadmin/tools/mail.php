@@ -26,7 +26,7 @@ function send_forgotten_mail($email, $name, $link) {
 	$mail->Username = $ini ["mail_user"]; // SMTP username
 	$mail->Password = $ini ["mail_pwd"]; // SMTP password
 	//$mail->SMTPSecure = 'ssl'; // Enable encryption, 'ssl' also accepted
-	//$mail->Port = 465;
+	$mail->Port = $ini ["mail_port"];
 	
 	$mail->From = $ini ["mail_from"];
     $mail_from_name = 'HTAdmin';
